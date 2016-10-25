@@ -5,9 +5,16 @@ public class PlayerController : MonoBehaviour {
 
     public float m_speed = 1f;
     public float j_force = 1f;
+    public AudioClip jumpSound;
 
     private Rigidbody2D rBody;
+    private AudioSource source;
 
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
+    
     // Use this for initialization
     void Start() { 
         rBody = GetComponent<Rigidbody2D>();
@@ -29,6 +36,7 @@ public class PlayerController : MonoBehaviour {
             //holding jump button//
             if (Input.GetButtonDown("Jump"))
             {
+                source.PlayOneShot(jumpSound, 1);
                 rBody.AddForce(new Vector2(0, j_force));
             }
         }
