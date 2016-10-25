@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
     public float m_speed = 1f;
     public float j_force = 1f;
     public AudioClip jumpSound;
+    public GameObject[] listModule;
 
     private Rigidbody2D rBody;
     private AudioSource source;
@@ -38,6 +39,22 @@ public class PlayerController : MonoBehaviour {
             {
                 source.PlayOneShot(jumpSound, 1);
                 rBody.AddForce(new Vector2(0, j_force));
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                if (GameManager.instance.IndexItem == 2)
+                {
+                    GameManager.instance.IndexItem = 0;
+                }
+                else
+                {
+                    GameManager.instance.IndexItem++;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                source.PlayOneShot(jumpSound, 1);
+                Instantiate(listModule[GameManager.instance.IndexItem], transform.position, Quaternion.identity);
             }
         }
     }
