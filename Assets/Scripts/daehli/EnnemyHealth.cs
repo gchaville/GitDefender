@@ -5,8 +5,8 @@ public class EnnemyHealth : MonoBehaviour {
 
 	public int startingHealth = 100; // Faire de l'héritage
 	public int currentHealth;
-
-	public int scoreValue = 100; // nombre de ligne de code 
+	public int scoreValue = 100; // nombre de ligne de code
+	public int scoreResource = 100;
 
 
 
@@ -37,11 +37,16 @@ public class EnnemyHealth : MonoBehaviour {
 		}
 	}
 
+	public void ExploseOnContact(){ 
+		Death ();
+	}
+
 
 	void Death ()
 	{
 		isDead = true;
-
+		ScoreManager.score += scoreValue;
+		RessourcesManager.ressources += scoreResource;
 		Destroy (gameObject);
 
 		// capsuleCollider.isTrigger = true;

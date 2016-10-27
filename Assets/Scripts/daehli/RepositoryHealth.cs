@@ -6,6 +6,7 @@ public class RepositoryHealth : MonoBehaviour {
 
 	public int startingHealth = 1000;
 	public int currentHealth;
+	TextMesh text;
 
 	bool isDead;
 	bool damaged;
@@ -13,12 +14,15 @@ public class RepositoryHealth : MonoBehaviour {
 	// Comme un constructeur
 	void Awake(){
 		currentHealth = startingHealth;
+		text = gameObject.GetComponentInChildren<TextMesh>();
+		text.text = "" + startingHealth + "\n--------\n"+ currentHealth;
 
 	}
 
 	
 	// Update is called once per frame
 	void Update () {
+
 
 		if (damaged) {
 			//reçoit du dommage
@@ -27,10 +31,10 @@ public class RepositoryHealth : MonoBehaviour {
 		}
 
 		damaged = false;
-	
+			
 	}
 
-	// Quand C'est public les autrs Scripts peuvent l'appeler
+	// Quand C'est public les autres Scripts peuvent l'appeler
 
 	public void TakeDamage (int amount)
 	{
@@ -40,11 +44,14 @@ public class RepositoryHealth : MonoBehaviour {
 		// Combien de vie doit t'il perdre
 		currentHealth -= amount;
 
+		text.text = "" + startingHealth + "\n--------\n"+ currentHealth;
+
 		// If the player has lost all it's health and the death flag hasn't been set yet...
 		if(currentHealth <= 0 && !isDead)
 		{
 			// ... it should die.
 			Death ();
+			text.text += "You are a Looser !!";
 		}
 	}
 

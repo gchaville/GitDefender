@@ -4,11 +4,12 @@ using System.Collections;
 public class EnnemyAttack : MonoBehaviour {
 
 	public float timeBetweenAttacks = 0.5f;
-	public int attackDamage = 10;
+	public int attackDamage = 100;
 	// Faire un critical avec un fonction
 
 	GameObject repository;
 	RepositoryHealth repositoryHealth;
+	EnnemyHealth ennemyHealth;
 	Transform repositoryPosition;
 	Transform currentPositionEnnemy;
 
@@ -20,31 +21,34 @@ public class EnnemyAttack : MonoBehaviour {
 		repositoryHealth = repository.GetComponent<RepositoryHealth> ();
 		repositoryPosition = repository.transform;
 		currentPositionEnnemy = gameObject.transform;
+		ennemyHealth = gameObject.GetComponent<EnnemyHealth> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
 		timer += Time.deltaTime;
 		currentPositionEnnemy = gameObject.transform;
-		Debug.Log (currentPositionEnnemy.position - repositoryPosition.position);
+		if (currentPositionEnnemy != null) {
 
-		if ((currentPositionEnnemy.position.x - repositoryPosition.position.x) <= 1.5f) {
-			repositortInRange = true;
-		}
+			if ((currentPositionEnnemy.position.x - repositoryPosition.position.x) <= 1.5f) {
+				repositortInRange = true;
+			}
 
-		if(timer >= timeBetweenAttacks && repositortInRange/* && enemyHealth.currentHealth > 0*/)
-		{
-			Attack ();
-		}
+			if (timer >= timeBetweenAttacks && repositortInRange/* && enemyHealth.currentHealth > 0*/) {
+				Attack ();
+			}
 
-		repositortInRange = false;
+			repositortInRange = false;
+		} else
+			return;
 			
 	}
 
 	void Attack(){
 		timer = 0f;
 		if (repositoryHealth.currentHealth > 0) {
-			repositoryHealth.TakeDamage (attackDamage);
+			repositoryHealth.TakeDamage(attackDamage);
+			//ennemyHealth.ExploseOnContact ();
 		}
 	}
 }
