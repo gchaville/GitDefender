@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour {
     private AudioSource source;
 
 	private Animator anim;
+    public GameObject moduleSpawn = null;
+
+    private GameObject myModule;
 
     void Awake(){
         source = GetComponent<AudioSource>();
@@ -50,9 +53,36 @@ public class PlayerController : MonoBehaviour {
 				else
 					GameManager.instance.IndexItem++;
 			} else if (Input.GetKeyDown (KeyCode.X))
-				Instantiate (listModule [GameManager.instance.IndexItem], transform.position, Quaternion.identity);
+
+                if(moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
+                {
+                    myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
+                    myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
+                    moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
+                }
+                else
+                {
+                    Debug.Log("un deux test");
+                }
+
 		} else if(rBody.velocity.y < 0){
 			anim.SetBool ("isFalling",true);
 		}
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "ModuleSpawn")
+        {
+            moduleSpawn = other.gameObject;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "ModuleSpawn")
+        {
+            moduleSpawn = null;
+        }
     }
 }
