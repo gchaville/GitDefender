@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
                 source.PlayOneShot(jumpSound, 1);
                 rBody.velocity = new Vector2(rBody.velocity.x, 8);
                 other.GetComponent<Enemy>().launchDeath();
+				GameManager.instance.getCamera ().setShake (0.2f);
                 StartCoroutine(Wait());
             }
         }

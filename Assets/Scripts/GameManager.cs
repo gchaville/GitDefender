@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour {
 
 	private PlayerController player;
 
+	private CameraManager cameraManager;
+
     void Awake () {
+		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager>();
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -30,5 +33,9 @@ public class GameManager : MonoBehaviour {
 			print ("Game Over");
 			player.enabled = false;
 		}
+	}
+
+	public CameraManager getCamera(){
+		return cameraManager;
 	}
 }
