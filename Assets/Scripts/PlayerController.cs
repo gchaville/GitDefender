@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public float m_speed;
     public float j_force;
@@ -12,67 +13,91 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rBody;
     private AudioSource source;
 
-	private Animator anim;
-    public GameObject moduleSpawn = null;
+    private Animator anim;
+    private GameObject moduleSpawn = null;
 
     private GameObject myModule;
+    private bool waitForEnemy = true;
 
-    void Awake(){
+    public bool grounded = false;
+
+    void Awake()
+    {
         source = GetComponent<AudioSource>();
     }
-    
-    void Start() { 
-		anim = GetComponent<Animator> ();
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
         rBody = GetComponent<Rigidbody2D>();
     }
-		
-    void Update(){
+
+    void Update()
+    {
         float move = Input.GetAxisRaw("Horizontal");
-		if (move != 0) {
-			anim.SetBool ("isMoving", true);
-			if (move < 0) {
-				this.transform.localScale = new Vector2 (-0.4f, this.transform.localScale.y);
-			} else {
-				this.transform.localScale = new Vector2 (0.4f, this.transform.localScale.y);
-			}
-		} else {
-			anim.SetBool ("isMoving", false);
-		}
+        if (move != 0)
+        {
+            anim.SetBool("isMoving", true);
+            if (move < 0)
+            {
+                this.transform.localScale = new Vector2(-0.4f, this.transform.localScale.y);
+            }
+            else
+            {
+                this.transform.localScale = new Vector2(0.4f, this.transform.localScale.y);
+            }
+        }
+        else
+        {
+            anim.SetBool("isMoving", false);
+        }
+
         rBody.velocity = new Vector2(move * m_speed, rBody.velocity.y);
 
-		if (rBody.velocity.y == 0) {
-			anim.SetBool ("isFalling",false);
-			if (Input.GetButtonDown ("Jump")) {
-				anim.SetTrigger ("isJumping");
-				source.volume = 0.2f;
-				source.PlayOneShot (jumpSound, 1);
-				rBody.velocity = new Vector2 (rBody.velocity.x, j_force);
-			} else if (Input.GetKeyDown (KeyCode.Z)) {
-				if (GameManager.instance.IndexItem == 2)
-					GameManager.instance.IndexItem = 0;
-				else
-					GameManager.instance.IndexItem++;
-			} else if (Input.GetKeyDown (KeyCode.X))
+        if(grounded)
+        {
+            anim.SetBool("isFalling", false);
 
-                if(moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
-                {
-                    myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
-                    myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
-                    moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
-                }
-                else
-                {
-                    Debug.Log("un deux test");
-                }
+            if (Input.GetButtonDown("Jump"))
+            {
+                anim.SetTrigger("isJumping");
+                source.volume = 0.2f;
+                source.PlayOneShot(jumpSound, 1);
+                rBody.velocity = new Vector2(rBody.velocity.x, j_force);
 
-		} else if(rBody.velocity.y < 0){
-			anim.SetBool ("isFalling",true);
-		}
+                grounded = false;
+            }
+
+            
+        }
+      
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (GameManager.instance.IndexItem == 2)
+                GameManager.instance.IndexItem = 0;
+            else
+                GameManager.instance.IndexItem++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
+            {
+                myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
+                myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
+                moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
+            }
+        }
+
+        if (rBody.velocity.y < 0)
+        {
+            anim.SetBool("isFalling", true);
+        }
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if(other.gameObject.tag == "ModuleSpawn")
+        if (other.gameObject.tag == "ModuleSpawn")
         {
             moduleSpawn = other.gameObject;
         }
@@ -84,5 +109,32 @@ public class PlayerController : MonoBehaviour {
         {
             moduleSpawn = null;
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "ground")
+        {
+            grounded = true;
+        }
+        else if(other.gameObject.tag == "Ennemy")
+        {
+            if(waitForEnemy)
+            {
+                anim.SetTrigger("isJumping");
+                source.volume = 0.2f;
+                source.PlayOneShot(jumpSound, 1);
+                rBody.velocity = new Vector2(rBody.velocity.x, 8);
+                Destroy(other.gameObject);
+                StartCoroutine(Wait());
+            }
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        waitForEnemy = false;
+        yield return new WaitForSeconds(0.1f);
+        waitForEnemy = true;
     }
 }
