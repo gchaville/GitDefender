@@ -1,12 +1,11 @@
 fileFormatVersion: 2
-guid: c32f7de58860764408014376a49af267
-timeCreated: 1477405689
+guid: d69e7399c14f54693aa24bc7229d8fb4
+timeCreated: 1477857021
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Repository_0
-    21300002: Repository_1
-    21300004: Repository_2
+    21300000: groundEnemyWalk_0
+    21300002: groundEnemyWalk_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -47,7 +46,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 400
+  spritePixelsToUnits: 32
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
@@ -61,39 +60,26 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Repository_0
+      name: groundEnemyWalk_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 640
-        height: 640
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Repository_1
+      name: groundEnemyWalk_1
       rect:
         serializedVersion: 2
-        x: 640
+        x: 32
         y: 0
-        width: 640
-        height: 640
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Repository_2
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 0
-        width: 640
-        height: 640
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
