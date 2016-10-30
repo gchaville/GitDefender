@@ -3,59 +3,56 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public float m_speed = 1f;
-    public float j_force = 1f;
+    public float m_speed;
+    public float j_force;
     public AudioClip jumpSound;
+
     public GameObject[] listModule;
 
     private Rigidbody2D rBody;
     private AudioSource source;
 
-    void Awake()
-    {
+	private Animator anim;
+
+    void Awake(){
         source = GetComponent<AudioSource>();
     }
     
-    // Use this for initialization
     void Start() { 
+		anim = GetComponent<Animator> ();
         rBody = GetComponent<Rigidbody2D>();
     }
-
-    // Déclaration de la variable de vitesse
-    
-
-
-    // Update is called once per frame
-    void Update()
-    {
+		
+    void Update(){
         float move = Input.GetAxisRaw("Horizontal");
-
+		if (move != 0) {
+			anim.SetBool ("isMoving", true);
+			if (move < 0) {
+				this.transform.localScale = new Vector2 (-0.4f, this.transform.localScale.y);
+			} else {
+				this.transform.localScale = new Vector2 (0.4f, this.transform.localScale.y);
+			}
+		} else {
+			anim.SetBool ("isMoving", false);
+		}
         rBody.velocity = new Vector2(move * m_speed, rBody.velocity.y);
 
-        if (rBody.velocity.y == 0)
-        {
-            //holding jump button//
-            if (Input.GetButtonDown("Jump"))
-            {
-                source.PlayOneShot(jumpSound, 1);
-                rBody.AddForce(new Vector2(0, j_force));
-            }
-            else if (Input.GetKeyDown(KeyCode.Z))
-            {
-                if (GameManager.instance.IndexItem == 2)
-                {
-                    GameManager.instance.IndexItem = 0;
-                }
-                else
-                {
-                    GameManager.instance.IndexItem++;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                source.PlayOneShot(jumpSound, 1);
-                Instantiate(listModule[GameManager.instance.IndexItem], transform.position, Quaternion.identity);
-            }
-        }
+		if (rBody.velocity.y == 0) {
+			anim.SetBool ("isFalling",false);
+			if (Input.GetButtonDown ("Jump")) {
+				anim.SetTrigger ("isJumping");
+				source.volume = 0.2f;
+				source.PlayOneShot (jumpSound, 1);
+				rBody.velocity = new Vector2 (rBody.velocity.x, j_force);
+			} else if (Input.GetKeyDown (KeyCode.Z)) {
+				if (GameManager.instance.IndexItem == 2)
+					GameManager.instance.IndexItem = 0;
+				else
+					GameManager.instance.IndexItem++;
+			} else if (Input.GetKeyDown (KeyCode.X))
+				Instantiate (listModule [GameManager.instance.IndexItem], transform.position, Quaternion.identity);
+		} else if(rBody.velocity.y < 0){
+			anim.SetBool ("isFalling",true);
+		}
     }
 }
