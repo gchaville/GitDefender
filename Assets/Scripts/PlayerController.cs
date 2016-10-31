@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     public bool CanJumpDown;
     public GameObject groundCheck;
 
+    private bool Stun = false;
+    private bool Invisible = false;
+
     void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -40,70 +43,73 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        float move = Input.GetAxisRaw("Horizontal");
-        if (move != 0)
+        if(!Stun)
         {
-            anim.SetBool("isMoving", true);
-            if (move < 0)
+            float move = Input.GetAxisRaw("Horizontal");
+            if (move != 0)
             {
-                this.transform.localScale = new Vector2(-0.4f, this.transform.localScale.y);
-            }
-            else
-            {
-                this.transform.localScale = new Vector2(0.4f, this.transform.localScale.y);
-            }
-        }
-        else
-        {
-            anim.SetBool("isMoving", false);
-        }
-
-        rBody.velocity = new Vector2(move * m_speed, rBody.velocity.y);
-
-        if(grounded)
-        {
-            anim.SetBool("isFalling", false);
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                if(CanJumpDown == false)
+                anim.SetBool("isMoving", true);
+                if (move < 0)
                 {
-                    anim.SetTrigger("isJumping");
-                    source.volume = 0.2f;
-                    source.PlayOneShot(jumpSound, 1);
-                    rBody.velocity = new Vector2(rBody.velocity.x, j_force);
-
-                    grounded = false;
+                    this.transform.localScale = new Vector2(-0.4f, this.transform.localScale.y);//*********************************************
                 }
                 else
                 {
-                    
-                    downJump(groundCheck.GetComponent<GroundCheckController>().platformDownJump);
+                    this.transform.localScale = new Vector2(0.4f, this.transform.localScale.y);//***********************************************
                 }
             }
-        }
-      
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (GameManager.instance.IndexItem == 2)
-                GameManager.instance.IndexItem = 0;
             else
-                GameManager.instance.IndexItem++;
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
             {
-                myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
-                myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
-                moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
+                anim.SetBool("isMoving", false);
             }
-        }
 
-        if (rBody.velocity.y < 0)
-        {
-            anim.SetBool("isFalling", true);
+            rBody.velocity = new Vector2(move * m_speed, rBody.velocity.y);
+
+            if (grounded)
+            {
+                anim.SetBool("isFalling", false);
+
+                if (Input.GetButtonDown("Jump"))
+                {
+                    if (CanJumpDown == false)
+                    {
+                        anim.SetTrigger("isJumping");
+                        source.volume = 0.2f;
+                        source.PlayOneShot(jumpSound, 1);
+                        rBody.velocity = new Vector2(rBody.velocity.x, j_force);
+
+                        grounded = false;
+                    }
+                    else
+                    {
+
+                        downJump(groundCheck.GetComponent<GroundCheckController>().platformDownJump);
+                    }
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                if (GameManager.instance.IndexItem == 2)
+                    GameManager.instance.IndexItem = 0;
+                else
+                    GameManager.instance.IndexItem++;
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
+                {
+                    myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
+                    myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
+                    moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
+                }
+            }
+
+            if (rBody.velocity.y < 0)
+            {
+                anim.SetBool("isFalling", true);
+            }
         }
     }
 
@@ -123,11 +129,59 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "Ennemy" && Invisible == false)
+        {
+            Invisible = true;
+            gameObject.layer = 10;
+            groundCheck.layer = 10;
+
+            rBody.velocity = Vector3.zero;
+
+            /*if (coll.gameObject.transform.position.x > transform.position.x)
+            {
+                rBody.AddForce(Vector2.left * 100);
+            }
+            else
+            {
+                rBody.AddForce(Vector2.right * 100);
+            }*/
+
+            StartCoroutine(StunPlayer());
+            StartCoroutine(Flasher());
+        }
+    }
+
     IEnumerator Wait()
     {
         waitForEnemy = false;
         yield return new WaitForSeconds(0.1f);
         waitForEnemy = true;
+    }
+
+    IEnumerator StunPlayer()
+    {
+        Stun = true;
+        yield return new WaitForSeconds(1f);
+        Stun = false;
+
+        groundCheck.layer = 9;
+    }
+
+    IEnumerator Flasher()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+            yield return new WaitForSeconds(.1f);
+            GetComponent<SpriteRenderer>().enabled = true;
+            yield return new WaitForSeconds(.1f);
+        }
+
+        Invisible = false;
+        gameObject.layer = 9;
+
     }
 
     public void downJump(Collider2D other)
