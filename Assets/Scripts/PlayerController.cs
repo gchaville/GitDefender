@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     public Collider2D lastPlatform;
     public string lastPlatformName;
 
+    public bool CanJumpDown;
+    public GameObject groundCheck;
+
     void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -63,15 +66,21 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetButtonDown("Jump"))
             {
-                anim.SetTrigger("isJumping");
-                source.volume = 0.2f;
-                source.PlayOneShot(jumpSound, 1);
-                rBody.velocity = new Vector2(rBody.velocity.x, j_force);
+                if(CanJumpDown == false)
+                {
+                    anim.SetTrigger("isJumping");
+                    source.volume = 0.2f;
+                    source.PlayOneShot(jumpSound, 1);
+                    rBody.velocity = new Vector2(rBody.velocity.x, j_force);
 
-                grounded = false;
+                    grounded = false;
+                }
+                else
+                {
+                    
+                    downJump(groundCheck.GetComponent<GroundCheckController>().platformDownJump);
+                }
             }
-
-            
         }
       
         if (Input.GetKeyDown(KeyCode.Z))
@@ -104,33 +113,6 @@ public class PlayerController : MonoBehaviour
         {
             moduleSpawn = other.gameObject;
         }
-
-        if (other.gameObject.tag == "ground")
-        {
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                rBody.WakeUp();
-                
-                if (Input.GetButtonDown("Jump"))
-                {
-                    Debug.Log("cest supposer marcher");
-
-                    Physics2D.IgnoreCollision(other.GetComponent<Collider2D>(), GetComponent<Collider2D>());
-
-                    anim.SetTrigger("isJumping");
-                    source.volume = 0.2f;
-                    source.PlayOneShot(jumpSound, 1);
-                    rBody.velocity = new Vector2(rBody.velocity.x, 4);
-
-                    grounded = false;
-
-                    lastPlatformName = other.transform.name;
-                    lastPlatform = other.transform.GetComponent<Collider2D>();
-                    Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>());
-                    Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>());
-                }
-            }
-        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -141,21 +123,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    IEnumerator Wait()
     {
-        if(other.gameObject.tag == "ground")
-        {
-            grounded = true;
+        waitForEnemy = false;
+        yield return new WaitForSeconds(0.1f);
+        waitForEnemy = true;
+    }
 
-            if (other.transform.name != lastPlatformName)
-            {
-                Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>(), false);
-                Physics2D.IgnoreCollision(lastPlatform, GetComponent<Collider2D>(), false);
+    public void downJump(Collider2D other)
+    {
+        grounded = false;
 
-            }
-        }
-        else if(other.gameObject.tag == "Ennemy")
+        anim.SetTrigger("isJumping");
+        source.volume = 0.2f;
+        source.PlayOneShot(jumpSound, 1);
+        rBody.velocity = new Vector2(rBody.velocity.x, 4);
+
+        
+
+        lastPlatformName = other.transform.name;
+        lastPlatform = other.transform.GetComponent<Collider2D>();
+        Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>());
+        Physics2D.IgnoreCollision(lastPlatform, GetComponent<Collider2D>());
+    }
+
+    public void landDownJump(Collider2D other)
+    {
+        grounded = true;
+        CanJumpDown = false;
+
+        if (other.transform.name != lastPlatformName)
         {
+<<<<<<< HEAD
             if(waitForEnemy)
             {
                	anim.SetTrigger("isJumping");
@@ -166,13 +165,29 @@ public class PlayerController : MonoBehaviour
 				GameManager.instance.getCamera ().setShake (0.2f);
                 StartCoroutine(Wait());
             }
+=======
+            Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>(), false);
+            Physics2D.IgnoreCollision(lastPlatform, GetComponent<Collider2D>(), false);
+
+            Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<BoxCollider2D>(), false);
+            Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<Collider2D>(), false);
+
+            lastPlatform = null;
+            lastPlatformName = null;
+>>>>>>> 04b16029f1be8f35423ce193eb6a4e6f2cd43dcb
         }
     }
 
-    IEnumerator Wait()
+    public void jumpOnEnnemy(Collider2D other)
     {
-        waitForEnemy = false;
-        yield return new WaitForSeconds(0.1f);
-        waitForEnemy = true;
+        if (waitForEnemy)
+        {
+            source.volume = 0.2f;
+            source.PlayOneShot(jumpSound, 1);
+            rBody.velocity = new Vector2(rBody.velocity.x, 8);
+            other.GetComponent<Enemy>().launchDeath();
+            GameManager.instance.getCamera().setShake(0.2f);
+            StartCoroutine(Wait());
+        }
     }
 }
