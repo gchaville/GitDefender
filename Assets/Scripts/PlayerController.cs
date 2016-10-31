@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour
     private bool Stun = false;
     private bool Invisible = false;
 
+    private GameObject ordi;
+    bool facingRight = true;
+
+    private float timeTap;
+
     void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -46,17 +51,10 @@ public class PlayerController : MonoBehaviour
         if(!Stun)
         {
             float move = Input.GetAxisRaw("Horizontal");
+
             if (move != 0)
             {
                 anim.SetBool("isMoving", true);
-                if (move < 0)
-                {
-                    this.transform.localScale = new Vector2(-0.4f, this.transform.localScale.y);//*********************************************
-                }
-                else
-                {
-                    this.transform.localScale = new Vector2(0.4f, this.transform.localScale.y);//***********************************************
-                }
             }
             else
             {
@@ -106,7 +104,28 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1"))
             {
-                if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false && GameManager.instance.Ressource >= listModule[GameManager.instance.IndexItem].GetComponent<ModuleController>().Ressource)
+                if(ordi != null)
+                {
+                    GameManager.instance.Ressource++;
+                    timeTap = Time.time;
+                    anim.SetBool("isTaping", true);
+
+                    if(ordi.transform.position.x > transform.position.x)
+                    {
+                        if(!facingRight)
+                        {
+                            Flip();
+                        }
+                    }
+                    else
+                    {
+                        if (facingRight)
+                        {
+                            Flip();
+                        }
+                    }
+                }
+                else if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false && GameManager.instance.Ressource >= listModule[GameManager.instance.IndexItem].GetComponent<ModuleController>().Ressource)
                 {
                     myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
                     myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
@@ -120,6 +139,21 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetBool("isFalling", true);
             }
+
+            if (move > 0 && !facingRight)
+            {
+                Flip();
+            }
+            else if (move < 0 && facingRight)
+            {
+                Flip();
+            }
+        }
+
+        if (Time.time > timeTap + 0.25f)
+        {
+            anim.SetTrigger("triStopTap");
+            anim.SetBool("isTaping", false);
         }
     }
 
@@ -129,6 +163,10 @@ public class PlayerController : MonoBehaviour
         {
             moduleSpawn = other.gameObject;
         }
+        else if(other.gameObject.tag == "ordi")
+        {
+            ordi = other.gameObject;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -136,6 +174,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "ModuleSpawn")
         {
             moduleSpawn = null;
+        }
+        else if (other.gameObject.tag == "ordi")
+        {
+            ordi = null;
         }
     }
 
@@ -240,5 +282,13 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.getCamera().setShake(0.2f);
             StartCoroutine(Wait());
         }
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }
