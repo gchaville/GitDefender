@@ -77,6 +77,7 @@ public class Enemy : MonoBehaviour {
 		anim.SetTrigger ("isDead");
 		yield return new WaitForSeconds (0.4f);
 		Destroy (this.gameObject);
+        GameManager.instance.monstersLeft--;
 	}
 
     public IEnumerator Frozen() {
