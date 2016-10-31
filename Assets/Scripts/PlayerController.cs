@@ -278,8 +278,16 @@ public class PlayerController : MonoBehaviour
                 other.GetComponent<Enemy>().launchDeath();
                 GameManager.instance.getCamera().setShake(0.2f);
                 StartCoroutine(Wait());
+                StartCoroutine(InvinsibleQuandOnTueEnnemy());
             }
         }
+    }
+
+    IEnumerator InvinsibleQuandOnTueEnnemy()
+    {
+        Invisible = true;
+        yield return new WaitForSeconds(0.05f);
+        Invisible = false;
     }
 
     void Flip()
