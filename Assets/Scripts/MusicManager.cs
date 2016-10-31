@@ -5,8 +5,8 @@ public class MusicManager : MonoBehaviour {
 // script pour faire un effet de pitch sur la musique quand le dépot git prend un dommage
 
 	private AudioSource mainMusic;
-	private bool isGlitchingEffect = false;
-	private int pitchRepere = 0;
+	private int pitchRepere = 0;//permet de repasser la musique au pitch de 1 près un damage sur le repository
+	public AudioClip damagedMusic;
 
 	void Start () {
 		mainMusic = GetComponent<AudioSource> ();
@@ -39,5 +39,11 @@ public class MusicManager : MonoBehaviour {
 		} else {
 			pitchRepere = 1;
 		}
+	}
+
+	public void launchDamagedMusic(){
+		mainMusic.clip = damagedMusic;
+		mainMusic.pitch = 1;
+		mainMusic.Play ();
 	}
 }
