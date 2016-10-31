@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpawnModuleController : MonoBehaviour {
+public class GenerateurRessourceController : MonoBehaviour {
 
-    public bool Busy = false;
     public GameObject aura;
 
 	// Use this for initialization
@@ -18,7 +17,7 @@ public class SpawnModuleController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player" && Busy == false)
+        if(other.gameObject.tag == "Player")
         {
             aura.SetActive(true);
         }
