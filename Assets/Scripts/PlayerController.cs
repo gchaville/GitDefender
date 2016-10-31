@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
         {
             if(waitForEnemy)
             {
-                anim.SetTrigger("isJumping");
+               	anim.SetTrigger("isJumping");
                 source.volume = 0.2f;
                 source.PlayOneShot(jumpSound, 1);
                 rBody.velocity = new Vector2(rBody.velocity.x, 8);
