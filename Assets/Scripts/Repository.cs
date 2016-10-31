@@ -11,13 +11,13 @@ public class Repository : MonoBehaviour {
 
 	private bool alertIsLaunch;//pour changer la musique et les anims des "grounds" qu'une fois
 
+	public GameObject fonduGameOver;
+	public GameObject UIGameOver;
+	private bool launchFonduGameOver = false;
+
 	void Start () {
 		cameraManager = GameManager.instance.getCamera ();
 		depotHp = maxHp;
-	}
-
-	void Update () {
-	
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -26,7 +26,7 @@ public class Repository : MonoBehaviour {
 			cameraManager.setShake (0.5f);
 			switchSprite ();
 			StartCoroutine (slowMoEffect ());
-			GameManager.instance.checkIfGameOver (depotHp);
+			GameManager.instance.checkIfGameOver (this);
 			GameObject.Find ("Background").GetComponent<MusicManager> ().launchPitchEffect ();
 			GameManager.instance.GetComponent<GlitchEffect> ().launchGlitch ();
 			other.gameObject.GetComponent<Enemy> ().launchDeath();
@@ -62,5 +62,35 @@ public class Repository : MonoBehaviour {
 		foreach (GameObject effectAlert in wall) {
 			effectAlert.GetComponent<GroundEffect> ().launchAlert ();
 		}
+	}
+
+	public int getCurHp(){
+		return depotHp;
+	}
+
+	IEnumerator GameOverEffect(){
+		GameObject.Find ("Background").GetComponent<MusicManager> ().launchGameOverMusicEffect ();
+		this.GetComponent<BoxCollider2D> ().enabled = false;
+		Destroy (GetComponent<Rigidbody2D> ());
+		cameraManager.setShake (8f);
+
+		while (Time.timeScale > 0) {
+			GameManager.instance.GetComponent<GlitchEffect> ().launchGlitchGameOver ();
+			if (Time.timeScale - 0.1f < 0) {
+				break;
+			}
+			else 
+				Time.timeScale -= 0.1f;
+			yield return new WaitForSeconds(0.1f);
+		}
+		GameObject toInstantiate = Instantiate(fonduGameOver, transform) as GameObject;
+		toInstantiate.transform.SetParent (this.transform.parent);
+		yield return new WaitForSeconds(0.2f);
+		toInstantiate = Instantiate(UIGameOver, transform) as GameObject;
+		toInstantiate.transform.SetParent (this.transform.parent);
+	}
+
+	public void launchGameOverEffect(){
+		StartCoroutine (GameOverEffect ());
 	}
 }

@@ -28,9 +28,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 
-	public void checkIfGameOver(int depotHp){
-		if (depotHp <= 0) {
+	public void checkIfGameOver(Repository repot){
+		if (repot.getCurHp() <= 0) {
 			print ("Game Over");
+			repot.launchGameOverEffect ();
 			player.enabled = false;
 		}
 	}
