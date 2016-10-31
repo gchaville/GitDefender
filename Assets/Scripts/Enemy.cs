@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour {
 	public IEnumerator Die(){
 		enabled = false;
 		this.GetComponent<BoxCollider2D> ().enabled = false;
-		Destroy(this.GetComponent<Rigidbody2D> ());
+		Destroy(this.GetComponent<Rigidbody2D>());
 		anim.SetTrigger ("isDead");
 		yield return new WaitForSeconds (0.4f);
 		Destroy (this.gameObject);

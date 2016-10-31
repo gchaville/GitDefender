@@ -33,16 +33,17 @@ public class GroundCheckController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if ((other.gameObject.tag == "ground" || other.gameObject.tag == "bigGround") && other.transform.name != parent.lastPlatformName)
+        
+        if (other.gameObject.tag == "Ennemy")
+        {
+            parent.jumpOnEnnemy(other);
+        }
+        else if ((other.gameObject.tag == "ground" || other.gameObject.tag == "bigGround") && other.transform.name != parent.lastPlatformName)
         {
             parent.landDownJump(other);
 
-            Physics2D.IgnoreCollision(parent.lastPlatform, GetComponent<BoxCollider2D>(), false);
-            Physics2D.IgnoreCollision(parent.lastPlatform, GetComponent<Collider2D>(), false);
-        }
-        else if (other.gameObject.tag == "Ennemy")
-        {
-            parent.jumpOnEnnemy(other);
+            //Physics2D.IgnoreCollision(parent.lastPlatform, GetComponent<BoxCollider2D>(), false);
+            //Physics2D.IgnoreCollision(parent.lastPlatform, GetComponent<Collider2D>(), false);
         }
     }
 }
