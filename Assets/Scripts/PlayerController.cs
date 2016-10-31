@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetButtonDown("UIRight"))
             {
                 if (GameManager.instance.IndexItem == 2)
                     GameManager.instance.IndexItem = 0;
@@ -96,13 +96,23 @@ public class PlayerController : MonoBehaviour
                     GameManager.instance.IndexItem++;
             }
 
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetButtonDown("UILeft"))
             {
-                if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false)
+                if (GameManager.instance.IndexItem == 0)
+                    GameManager.instance.IndexItem = 2;
+                else
+                    GameManager.instance.IndexItem--;
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false && GameManager.instance.Ressource >= listModule[GameManager.instance.IndexItem].GetComponent<ModuleController>().Ressource)
                 {
                     myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
                     myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
                     moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
+
+                    GameManager.instance.Ressource -= listModule[GameManager.instance.IndexItem].GetComponent<ModuleController>().Ressource;
                 }
             }
 
