@@ -7,33 +7,26 @@ public class PlayerController : MonoBehaviour
     public float m_speed;
     public float j_force;
     public AudioClip jumpSound;
-
     public GameObject[] listModule;
+    public GameObject groundCheck;
+    public GameObject GagnerRessource;
 
     private Rigidbody2D rBody;
     private AudioSource source;
-
     private Animator anim;
     private GameObject moduleSpawn = null;
-
     private GameObject myModule;
     private bool waitForEnemy = true;
-
-    public bool grounded = false;
+    bool grounded = false;
+    private bool Stun = false;
+    private bool Invisible = false;
+    private GameObject ordi;
+    bool facingRight = true;
+    private float timeTap;
 
     public Collider2D lastPlatform;
     public string lastPlatformName;
-
     public bool CanJumpDown;
-    public GameObject groundCheck;
-
-    private bool Stun = false;
-    private bool Invisible = false;
-
-    private GameObject ordi;
-    bool facingRight = true;
-
-    private float timeTap;
 
     void Awake()
     {
@@ -107,6 +100,8 @@ public class PlayerController : MonoBehaviour
                 if(ordi != null)
                 {
                     GameManager.instance.Ressource++;
+                    Instantiate(GagnerRessource, new Vector2(transform.position.x + Random.Range(-0.3f, 0.3f), transform.position.y + 1f), Quaternion.identity);
+
                     timeTap = Time.time;
                     anim.SetBool("isTaping", true);
 
@@ -263,8 +258,8 @@ public class PlayerController : MonoBehaviour
 			Physics2D.IgnoreCollision(lastPlatform, GetComponent<BoxCollider2D>(), false);
 			Physics2D.IgnoreCollision(lastPlatform, GetComponent<Collider2D>(), false);
 
-			Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<BoxCollider2D>(), false);
-			Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<Collider2D>(), false);
+			//Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<BoxCollider2D>(), false);
+			//Physics2D.IgnoreCollision(lastPlatform, groundCheck.GetComponent<Collider2D>(), false);
 
 			lastPlatform = null;
 			lastPlatformName = null;
@@ -275,12 +270,15 @@ public class PlayerController : MonoBehaviour
     {
         if (waitForEnemy)
         {
-            source.volume = 0.2f;
-            source.PlayOneShot(jumpSound, 1);
-            rBody.velocity = new Vector2(rBody.velocity.x, 8);
-            other.GetComponent<Enemy>().launchDeath();
-            GameManager.instance.getCamera().setShake(0.2f);
-            StartCoroutine(Wait());
+            if(!Stun)
+            {
+                source.volume = 0.2f;
+                source.PlayOneShot(jumpSound, 1);
+                rBody.velocity = new Vector2(rBody.velocity.x, 8);
+                other.GetComponent<Enemy>().launchDeath();
+                GameManager.instance.getCamera().setShake(0.2f);
+                StartCoroutine(Wait());
+            }
         }
     }
 

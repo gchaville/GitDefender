@@ -85,7 +85,7 @@ public class Repository : MonoBehaviour {
 		}
 		GameObject toInstantiate = Instantiate(fonduGameOver, transform) as GameObject;
 		toInstantiate.transform.SetParent (this.transform.parent);
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.4f);
 		toInstantiate = Instantiate(UIGameOver, transform) as GameObject;
 		toInstantiate.transform.SetParent (this.transform.parent);
 	}
