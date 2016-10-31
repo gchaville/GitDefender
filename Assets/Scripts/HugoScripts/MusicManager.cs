@@ -46,4 +46,21 @@ public class MusicManager : MonoBehaviour {
 		mainMusic.pitch = 1;
 		mainMusic.Play ();
 	}
+
+	IEnumerator GameOverEffect(){
+		launchDamagedMusic ();
+		while (mainMusic.pitch>0) {
+			mainMusic.pitch -= 0.1f;
+			if (mainMusic.pitch - 0.1f > 0)
+				mainMusic.pitch -= 0.05f;
+			else
+				mainMusic.pitch = 0;
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
+
+	public void launchGameOverMusicEffect(){
+		pitchRepere = 0;
+		StartCoroutine (GameOverEffect ());
+	}
 }
