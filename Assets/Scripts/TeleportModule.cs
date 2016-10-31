@@ -1,30 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SlowModule : MonoBehaviour {
+public class TeleportModule : MonoBehaviour {
 
-    private bool canFreeze;
+    private bool canTeleport;
     public int life;
     public float delay;
 
     void Start() {
-        canFreeze = true;
+        canTeleport = true;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if(canFreeze) {
-            canFreeze = false;
-            StartCoroutine(other.gameObject.GetComponent<Enemy>().Frozen());
+        if (canTeleport) {
+            canTeleport = false;
+            other.gameObject.GetComponent<Enemy>().TeleportToSpawnPos();
             StartCoroutine(Delay());
             life--;
         }
         if (life <= 0)
             Destroy(gameObject);
-        
+
     }
 
     IEnumerator Delay() {
         yield return new WaitForSeconds(delay);
-        canFreeze = true;
+        canTeleport = true;
     }
 }
