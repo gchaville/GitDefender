@@ -69,7 +69,11 @@ public class BashWindows : MonoBehaviour {
 			break;
 		case 4:
 			glitch.gameObject.SetActive (true);
-			GameObject toInstantiate = Instantiate (uiConflict, transform) as GameObject;
+			//Camera main = Camera.main;
+			//Vector3 v = main.ViewportToWorldPoint (new Vector3 (1f, 1f, 1f));
+			GameObject toInstantiate = Instantiate (uiConflict, this.transform) as GameObject;
+			//toInstantiate.transform.position = new Vector2 (0f, 0f);
+			//toInstantiate.transform.position = v;
 			break;
 		}
 	}
