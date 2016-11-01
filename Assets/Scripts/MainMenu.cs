@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
 	public GameObject tutoPanel;
 	public GameObject mainPanel;
 
+	public GameObject launchPanel;
+
 	public Button[] mainButton;
 	private int cptMainMenu = 0;
 
@@ -60,10 +62,17 @@ public class MainMenu : MonoBehaviour
 		}
 	}
 
-	public void StartGame() 
-	{
-		SceneManager.LoadScene("BigSceneHugo");
+	public void StartGame() {
+		mainPanel.SetActive (false);
+		GameObject toInstantiate= Instantiate (launchPanel, transform) as GameObject;
+		toInstantiate.transform.SetParent (null);
+		StartCoroutine (Wait (12F));
 
+	}
+
+	IEnumerator Wait (float t) {
+		yield return new WaitForSeconds (t); 
+		SceneManager.LoadScene("BigSceneHugo");
 	}
 
 	public void QuitGame() 
