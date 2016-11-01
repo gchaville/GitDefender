@@ -28,9 +28,9 @@ public class SpawnerMob : MonoBehaviour {
 
 	void Awake(){
 		if (direction == 1) {
-			dirVector = Vector3.right;
-		} else
 			dirVector = Vector3.left;
+		} else
+			dirVector = Vector3.right;
 	}
 
 	void spawnEnemy(){

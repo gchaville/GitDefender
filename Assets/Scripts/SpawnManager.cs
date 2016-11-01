@@ -41,9 +41,7 @@ public class SpawnManager : MonoBehaviour {
             spawns[4].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
             spawns[5].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
         }
-
-        
-
+			
         foreach (SpawnerMob s in spawns)
             StartCoroutine(s.Wave());
     }

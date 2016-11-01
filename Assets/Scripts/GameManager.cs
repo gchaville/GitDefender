@@ -69,4 +69,8 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(5f);
         }
     }
+
+	public int getWave(){
+		return wave;
+	}
 }
