@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public float moveSpeed;
     Vector3 direction;
     public Vector3 spawnPos;
+    public bool IsFlying;
 
 	private Animator anim;
 

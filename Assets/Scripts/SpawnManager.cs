@@ -46,7 +46,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     void UpgradeDifficulty(int wave) {
-        if(ennemiesToSpawn < 50)
+        if(ennemiesToSpawn < 50 && (GameManager.instance.getWave() % 2) == 1)
             ennemiesToSpawn += 1;
 
         if(wave > 2 && groundChance > 40 && flyingChance < 30) {
