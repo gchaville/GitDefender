@@ -15,12 +15,13 @@ public class InventoryController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-        if(indexInventory != GameManager.instance.IndexItem)
+
+
+        if (indexInventory != GameManager.instance.IndexItem)
         {
             indexInventory = GameManager.instance.IndexItem;
 
-            arrow.transform.position = new Vector3(moduleIcons[indexInventory].transform.position.x - 10f, arrow.transform.position.y, arrow.transform.position.z);
+            arrow.transform.position = new Vector3(moduleIcons[indexInventory].transform.position.x - 8f, arrow.transform.position.y, arrow.transform.position.z);
         }
 	}
 }

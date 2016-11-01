@@ -278,6 +278,9 @@ public class PlayerController : MonoBehaviour
         {
             if(!Stun)
             {
+                GameManager.instance.Ressource += 5;
+                Instantiate(GagnerRessource, new Vector2(transform.position.x + Random.Range(-0.3f, 0.3f), transform.position.y + 1f), Quaternion.identity);
+
                 anim.SetTrigger("isJumping");
                 anim.SetBool("isFalling", true);
                 source.volume = 0.2f;
