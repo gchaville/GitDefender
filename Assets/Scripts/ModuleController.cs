@@ -4,6 +4,7 @@ using System.Collections;
 public class ModuleController : MonoBehaviour {
 
     public GameObject mySpawnModule;
+    public int Ressource;
 
 	// Use this for initialization
 	void Start () {

@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
-    private float moveSpeed;
+	
+    public float moveSpeed;
     Vector3 direction;
+    public Vector3 spawnPos;
 
 	private Animator anim;
 
@@ -12,9 +14,10 @@ public class Enemy : MonoBehaviour {
 
 	public string enemyName;
 
+    public int freezeTime;
+
 	void Start () {
 		anim = GetComponent<Animator> ();
-        moveSpeed = 2.5f;
 
 		int random = (int)Random.Range (0f, 2f);
 		if (random == 1) {
@@ -23,6 +26,7 @@ public class Enemy : MonoBehaviour {
 			setdirection (Vector3.left);
 		}
 
+        spawnPos = transform.position;
 		glitchTimer = maxTimerGlitch;
 	}
 
@@ -62,12 +66,25 @@ public class Enemy : MonoBehaviour {
 		StartCoroutine (Die ());
 	}
 
+    public void TeleportToSpawnPos() {
+        transform.position = spawnPos;
+    }
+
 	public IEnumerator Die(){
 		enabled = false;
 		this.GetComponent<BoxCollider2D> ().enabled = false;
-		Destroy(this.GetComponent<Rigidbody2D> ());
+		Destroy(this.GetComponent<Rigidbody2D>());
 		anim.SetTrigger ("isDead");
 		yield return new WaitForSeconds (0.4f);
 		Destroy (this.gameObject);
+        GameManager.instance.monstersLeft--;
 	}
+
+    public IEnumerator Frozen() {
+        moveSpeed = 1;
+		GetComponent<SpriteRenderer> ().color = Color.blue;
+        yield return new WaitForSeconds(freezeTime);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+        moveSpeed = 2.5f;
+    }
 }

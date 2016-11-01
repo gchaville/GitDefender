@@ -4,6 +4,7 @@ using System.Collections;
 public class SpawnModuleController : MonoBehaviour {
 
     public bool Busy = false;
+    public GameObject aura;
 
 	// Use this for initialization
 	void Start () {
@@ -14,4 +15,20 @@ public class SpawnModuleController : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player" && Busy == false)
+        {
+            aura.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            aura.SetActive(false);
+        }
+    }
 }

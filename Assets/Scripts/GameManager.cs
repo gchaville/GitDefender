@@ -8,9 +8,18 @@ public class GameManager : MonoBehaviour {
     public int Ressource = 0;
     public int IndexItem = 0;
 
+    private bool gameEnded;
+    private int wave;
+    public int monstersLeft;
+    private SpawnManager sm;
+
 	private PlayerController player;
 
+	private CameraManager cameraManager;
+    private int highScore;
+
     void Awake () {
+		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager>();
         if (instance == null)
             instance = this;
         else if (instance != this)
@@ -21,14 +30,43 @@ public class GameManager : MonoBehaviour {
     }
 	
 	void Start(){
+        sm = GetComponent<SpawnManager>();
+        gameEnded = false;
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController> ();
-	}
+        monstersLeft = 0;
+        wave = 0;
+        StartCoroutine(WaveTurn());
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+    }
 
 
-	public void checkIfGameOver(int depotHp){
-		if (depotHp <= 0) {
+	public void checkIfGameOver(Repository repot){
+		if (repot.getCurHp() <= 0) {
+            gameEnded = true;
 			print ("Game Over");
-			player.enabled = false;
+
+            if (wave > highScore){
+                PlayerPrefs.SetInt("HighScore", wave);
+            }
+
+            repot.launchGameOverEffect ();
+            player.StopPlayer();
+
+            
 		}
 	}
+
+	public CameraManager getCamera(){
+		return cameraManager;
+	}
+
+    IEnumerator WaveTurn() {
+        while(!gameEnded) {
+            wave++;
+            sm.StartNewWave(wave);
+            yield return new WaitWhile(() => monstersLeft > 0);
+            yield return new WaitForSeconds(5f);
+        }
+    }
 }
