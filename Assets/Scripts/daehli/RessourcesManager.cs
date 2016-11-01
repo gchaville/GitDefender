@@ -18,7 +18,7 @@ public class RessourcesManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		text.text = "Ressources : " + ressources;
+		text.text = "ressources " + ressources;
 	
 	}
 }

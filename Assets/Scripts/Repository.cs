@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Repository : MonoBehaviour {
@@ -6,6 +7,7 @@ public class Repository : MonoBehaviour {
 	private int depotHp;
 	public int maxHp;
 	private CameraManager cameraManager;
+	public Slider sliderHp;
 
 	public Sprite[] otherSprites;
 
@@ -18,6 +20,18 @@ public class Repository : MonoBehaviour {
 	void Start () {
 		cameraManager = GameManager.instance.getCamera ();
 		depotHp = maxHp;
+		sliderHp.value = depotHp;
+		sliderHp.fillRect.GetComponent<Image> ().color = Color.green;
+	}
+
+	void Update () {
+		if (depotHp <= maxHp / 2) {
+			sliderHp.fillRect.GetComponent<Image> ().color = Color.yellow;
+		}
+		if (depotHp <= maxHp / 4) {
+			sliderHp.fillRect.GetComponent<Image> ().color = Color.red;
+		}
+		sliderHp.value = depotHp;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
