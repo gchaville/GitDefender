@@ -5,12 +5,15 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+	public GameObject bash;
+	public GameObject[] buttons;
+
 	public string levelname;
 
     // Use this for initialization
     void Start()
     {
-
+		bash.SetActive(false);
     }
 
     // Update is called once per frame
@@ -21,7 +24,10 @@ public class MainMenu : MonoBehaviour
 
 	public void StartGame() 
 	{
-		SceneManager.LoadScene(levelname);
+		foreach (GameObject b in buttons)
+			b.SetActive (false);
+		bash.SetActive(true);
+		StartCoroutine (Wait (12.50F));
 
 	}
 
@@ -29,5 +35,10 @@ public class MainMenu : MonoBehaviour
 	{
 
 		Application.Quit();
+	}
+
+	IEnumerator Wait (float t) {
+		yield return new WaitForSeconds (t); 
+		SceneManager.LoadScene(levelname);
 	}
 }
