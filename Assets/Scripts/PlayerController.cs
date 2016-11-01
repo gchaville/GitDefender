@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
                     if (CanJumpDown == false)
                     {
                         anim.SetTrigger("isJumping");
+                        anim.SetBool("isFalling", true);
                         source.volume = 0.2f;
                         source.PlayOneShot(jumpSound, 1);
                         rBody.velocity = new Vector2(rBody.velocity.x, j_force);
@@ -122,6 +123,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (moduleSpawn != null && moduleSpawn.GetComponent<SpawnModuleController>().Busy == false && GameManager.instance.Ressource >= listModule[GameManager.instance.IndexItem].GetComponent<ModuleController>().Ressource)
                 {
+                    anim.SetBool("isDropping", true);
                     myModule = Instantiate(listModule[GameManager.instance.IndexItem], moduleSpawn.transform.position, Quaternion.identity) as GameObject;
                     myModule.GetComponent<ModuleController>().mySpawnModule = moduleSpawn;
                     moduleSpawn.GetComponent<SpawnModuleController>().Busy = true;
@@ -209,9 +211,12 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator StunPlayer()
     {
+        GameManager.instance.getCamera().setShake(0.5f);
+        anim.SetTrigger("takeDamage");
         Stun = true;
         yield return new WaitForSeconds(1f);
         Stun = false;
+        anim.SetTrigger("finStun");
 
         groundCheck.layer = 9;
     }
@@ -272,14 +277,24 @@ public class PlayerController : MonoBehaviour
         {
             if(!Stun)
             {
+                anim.SetTrigger("isJumping");
+                anim.SetBool("isFalling", true);
                 source.volume = 0.2f;
                 source.PlayOneShot(jumpSound, 1);
                 rBody.velocity = new Vector2(rBody.velocity.x, 8);
                 other.GetComponent<Enemy>().launchDeath();
                 GameManager.instance.getCamera().setShake(0.2f);
                 StartCoroutine(Wait());
+                StartCoroutine(InvinsibleQuandOnTueEnnemy());
             }
         }
+    }
+
+    IEnumerator InvinsibleQuandOnTueEnnemy()
+    {
+        Invisible = true;
+        yield return new WaitForSeconds(0.05f);
+        Invisible = false;
     }
 
     void Flip()
@@ -288,5 +303,11 @@ public class PlayerController : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    public void StopPlayer()
+    {
+        anim.SetTrigger("takeDamage");
+        Stun = true;
     }
 }
