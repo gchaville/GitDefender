@@ -13,8 +13,11 @@ public class BranchModule : MonoBehaviour {
 				GetComponent<SpriteRenderer> ().sprite = damagedSprite;
 			}
 
-			if (GetComponent<ModuleController>().life <= 0)
-				Destroy (this.gameObject);
-		}
+            if (GetComponent<ModuleController>().life <= 0)
+            {
+                GetComponent<ModuleController>().SetBusy();
+                Destroy(gameObject);
+            }
+        }
     }
 }

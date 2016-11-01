@@ -24,7 +24,10 @@ public class JumpModule : MonoBehaviour {
             GetComponent<ModuleController>().life--;
         }
         if (GetComponent<ModuleController>().life <= 0)
+        {
+            GetComponent<ModuleController>().SetBusy();
             Destroy(gameObject);
+        }
 
     }
 

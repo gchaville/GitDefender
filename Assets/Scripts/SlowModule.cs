@@ -21,9 +21,12 @@ public class SlowModule : MonoBehaviour {
 				StartCoroutine (Delay ());
                 GetComponent<ModuleController>().life--;
 			}
-			if (GetComponent<ModuleController>().life <= 0)
-				Destroy (gameObject);
-		}
+            if (GetComponent<ModuleController>().life <= 0)
+            {
+                GetComponent<ModuleController>().SetBusy();
+                Destroy(gameObject);
+            }
+        }
         
     }
 

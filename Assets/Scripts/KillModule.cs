@@ -21,9 +21,12 @@ public class KillModule : MonoBehaviour {
                 GetComponent<ModuleController>().life--;
 				StartCoroutine (Delay ());
 			}
-			if (GetComponent<ModuleController>().life <= 0)
-				Destroy (gameObject);
-		}
+            if (GetComponent<ModuleController>().life <= 0)
+            {
+                GetComponent<ModuleController>().SetBusy();
+                Destroy(gameObject);
+            }
+        }
     }
 
     IEnumerator Delay() {
