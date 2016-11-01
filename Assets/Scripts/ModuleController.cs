@@ -14,6 +14,11 @@ public class ModuleController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        
 	}
+
+    public void SetBusy()
+    {
+        mySpawnModule.GetComponent<SpawnModuleController>().Busy = false;
+    }
 }
