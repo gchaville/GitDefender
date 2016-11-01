@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: d105364fa88ed734f9b0474702a641cf
-timeCreated: 1477930674
+timeCreated: 1477971366
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: UIpackSheet_transparent_0
+    21300002: HelthBar
+    21300004: UIpackSheet_transparent_2
+    21300006: HealthBar2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -65,6 +68,45 @@ TextureImporter:
         x: 362
         y: 164
         width: 12
+        height: 12
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HelthBar
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 290
+        width: 16
+        height: 12
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UIpackSheet_transparent_2
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 306
+        width: 1
+        height: 1
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: HealthBar2
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 290
+        width: 16
         height: 12
       alignment: 4
       pivot: {x: 0, y: 0.5}

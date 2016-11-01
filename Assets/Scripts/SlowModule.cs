@@ -4,7 +4,6 @@ using System.Collections;
 public class SlowModule : MonoBehaviour {
 
     private bool canFreeze;
-    public int life;
     public float delay;
 	private Animator anim;
 
@@ -20,9 +19,9 @@ public class SlowModule : MonoBehaviour {
 				anim.SetTrigger ("Action");
 				StartCoroutine (other.gameObject.GetComponent<Enemy> ().Frozen ());
 				StartCoroutine (Delay ());
-				life--;
+                GetComponent<ModuleController>().life--;
 			}
-			if (life <= 0)
+			if (GetComponent<ModuleController>().life <= 0)
 				Destroy (gameObject);
 		}
         

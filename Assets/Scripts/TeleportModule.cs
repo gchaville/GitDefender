@@ -4,7 +4,6 @@ using System.Collections;
 public class TeleportModule : MonoBehaviour {
 
     private bool canTeleport;
-    public int life;
     public float delay;
 	private Animator anim;
 
@@ -20,9 +19,9 @@ public class TeleportModule : MonoBehaviour {
 				anim.SetTrigger ("Action");
 				other.gameObject.GetComponent<Enemy> ().TeleportToSpawnPos ();
 				StartCoroutine (Delay ());
-				life--;
+                GetComponent<ModuleController>().life--;
 			}
-			if (life <= 0)
+			if (GetComponent<ModuleController>().life <= 0)
 				Destroy (gameObject);
 		}
 
