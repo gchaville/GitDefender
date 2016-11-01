@@ -18,7 +18,7 @@ public class RessourcesManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		text.text = "ressources " + ressources;
+		text.text = "ressources " + GameManager.instance.Ressource;
 	
 	}
 }

@@ -15,7 +15,7 @@ public class JumpModule : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (canJump) {
+        if (canJump && other.tag == "Ennemy") {
             canJump = false;
             Rigidbody2D rb = other.gameObject.GetComponent<Rigidbody2D>();
 			anim.SetTrigger ("Action");

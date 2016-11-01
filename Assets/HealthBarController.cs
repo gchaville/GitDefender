@@ -15,7 +15,7 @@ public class HealthBarController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.localScale = new Vector3((MaxLife * 2) / Module.GetComponent<ModuleController>().life, 0.5f, 1);
+        transform.localScale = new Vector3((Module.GetComponent<ModuleController>().life * 2) / MaxLife, 0.5f, 1);
 
         if(transform.localScale.x < 0.5)
         {

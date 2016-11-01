@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetButtonDown("UIRight"))
             {
-                if (GameManager.instance.IndexItem == 2)
+                if (GameManager.instance.IndexItem == 4)
                     GameManager.instance.IndexItem = 0;
                 else
                     GameManager.instance.IndexItem++;
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
             {
                 if(ordi != null)
                 {
+
                     GameManager.instance.Ressource++;
                     Instantiate(GagnerRessource, new Vector2(transform.position.x + Random.Range(-0.3f, 0.3f), transform.position.y + 1f), Quaternion.identity);
 

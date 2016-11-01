@@ -20,7 +20,7 @@ public class InventoryController : MonoBehaviour {
         {
             indexInventory = GameManager.instance.IndexItem;
 
-            arrow.transform.position = new Vector3(moduleIcons[indexInventory].transform.position.x + 2.5f, arrow.transform.position.y, arrow.transform.position.z);
+            arrow.transform.position = new Vector3(moduleIcons[indexInventory].transform.position.x - 10f, arrow.transform.position.y, arrow.transform.position.z);
         }
 	}
 }
