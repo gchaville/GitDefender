@@ -4,7 +4,6 @@ using System.Collections;
 public class JumpModule : MonoBehaviour {
 
     private bool canJump;
-    public int life;
     public float delay;
     public float pushForce;
 
@@ -22,9 +21,9 @@ public class JumpModule : MonoBehaviour {
 			anim.SetTrigger ("Action");
             rb.velocity = new Vector2(rb.velocity.x, pushForce);
             StartCoroutine(Delay());
-            life--;
+            GetComponent<ModuleController>().life--;
         }
-        if (life <= 0)
+        if (GetComponent<ModuleController>().life <= 0)
             Destroy(gameObject);
 
     }

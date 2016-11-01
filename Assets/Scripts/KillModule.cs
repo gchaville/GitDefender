@@ -4,7 +4,6 @@ using System.Collections;
 public class KillModule : MonoBehaviour {
 
     private bool canKill;
-    public int life;
     public float delay;
 	private Animator anim;
 
@@ -19,10 +18,10 @@ public class KillModule : MonoBehaviour {
 				canKill = false;
 				anim.SetTrigger ("Action");
 				other.GetComponent<Enemy> ().launchDeath ();
-				life--;
+                GetComponent<ModuleController>().life--;
 				StartCoroutine (Delay ());
 			}
-			if (life <= 0)
+			if (GetComponent<ModuleController>().life <= 0)
 				Destroy (gameObject);
 		}
     }
