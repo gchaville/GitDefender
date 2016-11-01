@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour {
             sm.StartNewWave(wave);
             yield return new WaitWhile(() => monstersLeft > 0);
 			instantiateUINewWave ("wave over", 0);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
         }
     }
 
