@@ -16,7 +16,6 @@ public class InventoryController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log(moduleIcons[1].transform.position.x);
 
         if (indexInventory != GameManager.instance.IndexItem)
         {
