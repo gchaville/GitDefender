@@ -17,7 +17,7 @@ public class HealthBarController : MonoBehaviour {
 
         transform.localScale = new Vector3((Module.GetComponent<ModuleController>().life * 2) / MaxLife, 0.5f, 1);
 
-        if(transform.localScale.x < 0.5)
+        if(transform.localScale.x < 0.8)
         {
             GetComponent<SpriteRenderer>().sprite = PeuDeVie;
         }

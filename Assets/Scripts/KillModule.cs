@@ -13,7 +13,7 @@ public class KillModule : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Ennemy") {
+		if (other.tag == "Ennemy" && other.gameObject.GetComponent<Enemy>().IsFlying == false) {
 			if (canKill) {
 				canKill = false;
 				anim.SetTrigger ("Action");
