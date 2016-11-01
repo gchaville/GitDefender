@@ -46,8 +46,7 @@ public class GameManager : MonoBehaviour {
             gameEnded = true;
 			print ("Game Over");
 
-            if (wave > highScore)
-            {
+            if (wave > highScore){
                 PlayerPrefs.SetInt("HighScore", wave);
             }
 
@@ -70,4 +69,8 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(5f);
         }
     }
+
+	public int getWave(){
+		return wave;
+	}
 }

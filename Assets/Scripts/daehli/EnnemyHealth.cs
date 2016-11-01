@@ -8,9 +8,6 @@ public class EnnemyHealth : MonoBehaviour {
 	public int scoreValue = 100; // nombre de ligne de code
 	public int scoreResource = 100;
 
-
-
-
 	bool isDead;
 	// Constructeur 
 	void Awake (){
@@ -45,7 +42,7 @@ public class EnnemyHealth : MonoBehaviour {
 	void Death ()
 	{
 		isDead = true;
-		ScoreManager.score += scoreValue;
+		ScoreManager.wave += scoreValue;
 		RessourcesManager.ressources += scoreResource;
 		Destroy (gameObject);
 

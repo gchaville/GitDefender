@@ -19,13 +19,6 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator> ();
 
-		int random = (int)Random.Range (0f, 2f);
-		if (random == 1) {
-			setdirection (Vector3.right);
-		} else {
-			setdirection (Vector3.left);
-		}
-
         spawnPos = transform.position;
 		glitchTimer = maxTimerGlitch;
 	}
