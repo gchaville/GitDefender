@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
+	
     public float moveSpeed;
     Vector3 direction;
     public Vector3 spawnPos;
@@ -17,7 +18,6 @@ public class Enemy : MonoBehaviour {
 
 	void Start () {
 		anim = GetComponent<Animator> ();
-        moveSpeed = 2.5f;
 
 		int random = (int)Random.Range (0f, 2f);
 		if (random == 1) {
@@ -82,7 +82,9 @@ public class Enemy : MonoBehaviour {
 
     public IEnumerator Frozen() {
         moveSpeed = 1;
+		GetComponent<SpriteRenderer> ().color = Color.blue;
         yield return new WaitForSeconds(freezeTime);
+		GetComponent<SpriteRenderer> ().color = Color.white;
         moveSpeed = 2.5f;
     }
 }

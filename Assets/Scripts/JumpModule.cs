@@ -8,7 +8,10 @@ public class JumpModule : MonoBehaviour {
     public float delay;
     public float pushForce;
 
+	private Animator anim;
+
     void Start() {
+		anim = GetComponent<Animator> ();
         canJump = true;
     }
 
@@ -16,6 +19,7 @@ public class JumpModule : MonoBehaviour {
         if (canJump) {
             canJump = false;
             Rigidbody2D rb = other.gameObject.GetComponent<Rigidbody2D>();
+			anim.SetTrigger ("Action");
             rb.velocity = new Vector2(rb.velocity.x, pushForce);
             StartCoroutine(Delay());
             life--;
