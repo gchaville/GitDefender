@@ -4,9 +4,10 @@ using System.Collections;
 
 public class RepositoryHealth : MonoBehaviour {
 
-	public int startingHealth = 1000;
+	public int startingHealth = 100;
 	public int currentHealth;
 	TextMesh text;
+	Animator anim;
 
 	bool isDead;
 	bool damaged;
@@ -15,6 +16,7 @@ public class RepositoryHealth : MonoBehaviour {
 	void Awake(){
 		currentHealth = startingHealth;
 		text = gameObject.GetComponentInChildren<TextMesh>();
+		anim = gameObject.GetComponentInChildren<Animator> (); 
 		text.text = "" + startingHealth + "\n--------\n"+ currentHealth;
 
 	}
@@ -45,6 +47,10 @@ public class RepositoryHealth : MonoBehaviour {
 		currentHealth -= amount;
 
 		text.text = "" + startingHealth + "\n--------\n"+ currentHealth;
+
+		// Animation de la base de donnée
+
+		anim.SetInteger ("lifes", currentHealth);
 
 		// If the player has lost all it's health and the death flag hasn't been set yet...
 		if(currentHealth <= 0 && !isDead)
