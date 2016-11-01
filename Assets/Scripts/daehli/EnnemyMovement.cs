@@ -11,6 +11,9 @@ public class EnnemyMovement : MonoBehaviour {
 
 	private Transform init;
 
+	private bool firstMovement = false;
+	private bool firstHit = false;
+
 
 
 	void Awake()
@@ -20,7 +23,7 @@ public class EnnemyMovement : MonoBehaviour {
 
 	}
 
-	void Start(){
+	void CheckDirection(){
 		var init = this.GetComponent<Transform> ();
 		var XAxis = init.position.x;
 		//        -     Vector(0,0,0)    +
@@ -28,26 +31,35 @@ public class EnnemyMovement : MonoBehaviour {
 		// Si XAxix est Positif on déplace vers la Gauche
 		// Si XAxix est Négatif on va vers la droite
 		if (XAxis > 0)
-			rbody.AddForce(Vector2.left,ForceMode2D.Impulse);
+			rbody.velocity = new Vector2 (acceleration * Maxspeed, rbody.velocity.y);
 		else
-			rbody.AddForce (Vector2.right,ForceMode2D.Impulse);
+			rbody.velocity = new Vector2 (-(acceleration * Maxspeed), rbody.velocity.y);
 	}
 
 	// Update is called once per frame
 	void Update () {
 
+		if (!firstMovement) {
+			CheckDirection ();
+			firstMovement = true;
+		}
+
 		if (rbody.velocity.magnitude > Maxspeed) {
 
 			rbody.velocity = rbody.velocity.normalized * Maxspeed;
 		}
+
+		rbody.velocity = new Vector2 (rbody.velocity.x, rbody.velocity.y);
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
+
+
 		if (coll.gameObject.CompareTag ("Wall")) {
+			Debug.Log ("Collision");
 			var opposite = -(rbody.velocity);
-			rbody.AddForce (opposite, ForceMode2D.Impulse);
-		}
-
+			rbody.velocity = new Vector2(opposite.x*2,opposite.y*2);
+			Debug.Log (rbody.velocity);
+		} 
 	}
-
 }
