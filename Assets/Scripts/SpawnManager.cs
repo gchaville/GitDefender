@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour {
 
-    public GameObject[] spawners;
+	public List<GameObject> spawners = new List<GameObject>();
     private List<SpawnerMob> spawns = new List<SpawnerMob>();
 
 
@@ -15,11 +15,15 @@ public class SpawnManager : MonoBehaviour {
                 speedChance;
 
     void Start() {
+		GameObject toInstantiante = Instantiate(Resources.Load ("SpawnerGestionnary") ,new Vector3(8.7f,0f,-10f), Quaternion.identity) as GameObject;
+		for(int i = 0; i <toInstantiante.transform.childCount; i++){
+			spawners.Add(toInstantiante.transform.GetChild (i).gameObject);
+		}
         groundChance = 100;
         flyingChance = 0;
         speedChance = 0;
 
-        for (int i = 0; i < spawners.Length; i++)
+		for (int i = 0; i < spawners.Count; i++)
             spawns.Add(spawners[i].GetComponent<SpawnerMob>());
     }
     
