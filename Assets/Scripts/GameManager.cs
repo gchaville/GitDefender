@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 	private PlayerController player;
 
 	private CameraManager cameraManager;
+    private int highScore;
 
     void Awake () {
 		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager>();
@@ -35,15 +36,25 @@ public class GameManager : MonoBehaviour {
         monstersLeft = 0;
         wave = 0;
         StartCoroutine(WaveTurn());
-	}
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+    }
 
 
 	public void checkIfGameOver(Repository repot){
 		if (repot.getCurHp() <= 0) {
             gameEnded = true;
 			print ("Game Over");
-			repot.launchGameOverEffect ();
-			player.enabled = false;
+
+            if (wave > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore", wave);
+            }
+
+            repot.launchGameOverEffect ();
+            player.StopPlayer();
+
+            
 		}
 	}
 
