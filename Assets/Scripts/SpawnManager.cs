@@ -32,7 +32,7 @@ public class SpawnManager : MonoBehaviour {
         spawns[0].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
         spawns[1].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
 
-       /* if (wave > 4) {
+      	if (wave > 4) {
             spawns[2].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
             spawns[3].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
         }
@@ -42,10 +42,7 @@ public class SpawnManager : MonoBehaviour {
             spawns[5].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
         }
 
-        if (wave > 14) {
-            spawns[6].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
-            spawns[7].SetWaveInfos(groundChance, flyingChance, speedChance, ennemiesToSpawn);
-        }*/
+        
 
         foreach (SpawnerMob s in spawns)
             StartCoroutine(s.Wave());

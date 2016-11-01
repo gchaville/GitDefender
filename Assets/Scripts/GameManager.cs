@@ -46,8 +46,7 @@ public class GameManager : MonoBehaviour {
             gameEnded = true;
 			print ("Game Over");
 
-            if (wave > highScore)
-            {
+            if (wave > highScore){
                 PlayerPrefs.SetInt("HighScore", wave);
             }
 
