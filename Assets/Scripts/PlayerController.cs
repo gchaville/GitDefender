@@ -304,4 +304,10 @@ public class PlayerController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+    public void StopPlayer()
+    {
+        anim.SetTrigger("takeDamage");
+        Stun = true;
+    }
 }
