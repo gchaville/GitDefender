@@ -6,6 +6,7 @@ public class SpawnManager : MonoBehaviour {
     public GameObject[] spawners;
     private List<SpawnerMob> spawns = new List<SpawnerMob>();
 
+
     private int difficulty;
     private int ennemiesToSpawn;
 
@@ -23,8 +24,6 @@ public class SpawnManager : MonoBehaviour {
     }
     
     public void StartNewWave(int wave) {
-        Debug.Log("Wave " + wave);
-
         UpgradeDifficulty(wave);
 
         Debug.Log(groundChance + " " + flyingChance + " " + speedChance + " " + ennemiesToSpawn);

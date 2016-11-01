@@ -101,6 +101,7 @@ public class Repository : MonoBehaviour {
 		toInstantiate.transform.SetParent (this.transform.parent);
 		yield return new WaitForSeconds(0.4f);
 		toInstantiate = Instantiate(UIGameOver, transform) as GameObject;
+		toInstantiate.GetComponent<GameOverUI> ().setGameOverPanel (GameManager.instance.getWave(), PlayerPrefs.GetInt("HighScore", 0));
 		toInstantiate.transform.SetParent (this.transform.parent);
 	}
 

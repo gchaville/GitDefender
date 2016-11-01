@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour {
 	private CameraManager cameraManager;
     private int highScore;
 
+	public GameObject uiNewWave;
+
     void Awake () {
 		cameraManager = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraManager>();
         if (instance == null)
@@ -52,8 +54,6 @@ public class GameManager : MonoBehaviour {
 
             repot.launchGameOverEffect ();
             player.StopPlayer();
-
-            
 		}
 	}
 
@@ -62,15 +62,23 @@ public class GameManager : MonoBehaviour {
 	}
 
     IEnumerator WaveTurn() {
+		yield return new WaitForSeconds(2f);
         while(!gameEnded) {
             wave++;
+			instantiateUINewWave (wave.ToString (), -1);
             sm.StartNewWave(wave);
             yield return new WaitWhile(() => monstersLeft > 0);
+			instantiateUINewWave ("wave over", 0);
             yield return new WaitForSeconds(5f);
         }
     }
 
 	public int getWave(){
 		return wave;
+	}
+
+	public void instantiateUINewWave(string text, int value){
+		GameObject toInstantiate = Instantiate (uiNewWave, transform) as GameObject;
+		toInstantiate.GetComponent<UIWave> ().setText (text,value);
 	}
 }
